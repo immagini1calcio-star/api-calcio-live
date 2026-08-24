@@ -1,3 +1,4 @@
+
 import os
 import requests
 from flask import Flask, jsonify, request
@@ -21,7 +22,7 @@ LEGHES_ESPN = {
 
 @app.route('/', methods=['GET'])
 def home():
-    return "API Calcio attiva! Vai su /risultati?lega=serie-a per vedere i dati."
+    return "API Calcio attiva! Aggiungi /risultati?lega=serie-a all'indirizzo."
 
 @app.route('/risultati', methods=['GET'])
 def get_soccer_scores():
@@ -72,7 +73,3 @@ def get_soccer_scores():
        
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)}), 500
-
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8080)
-
