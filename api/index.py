@@ -1,7 +1,18 @@
 
+{
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/api/index.py"
+    }
+  ]
+}
+
+Mostra testo citato
 import os
 import requests
-from flask import Flask, jsonify, request
+import json
+from flask import Flask, jsonify, request, Response
 
 app = Flask(__name__)
 
@@ -22,7 +33,7 @@ LEGHES_ESPN = {
 
 @app.route('/', methods=['GET'])
 def home():
-    return "API Calcio attiva! Aggiungi /risultati?lega=serie-a all'indirizzo."
+    return "API Calcio attiva! Aggiungi /api/risultati?lega=serie-a all'indirizzo."
 
 @app.route('/risultati', methods=['GET'])
 def get_soccer_scores():
@@ -65,11 +76,16 @@ def get_soccer_scores():
             }
             partite_elaborate.append(info)
            
-        return jsonify({
+        payload = {
             "lega_richiesta": lega_scelta,
             "totale_partite_trovate": len(partite_elaborate),
             "risultati": partite_elaborate
-        })
+        }
+       
+        # Questa riga forza il browser a LEGGERE come testo anziché SCARICARE il file
+        return Response(json.dumps(payload), mimetype='application/json')
        
     except Exception as e:
-        return jsonify({"status": "error", "message": str(e)}), 500
+        return Response(json.dumps({"status": "error", "message": str(e)}), mimetype='application/json')
+
+Mostra testo citato
